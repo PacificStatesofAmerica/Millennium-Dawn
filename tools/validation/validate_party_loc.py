@@ -44,7 +44,10 @@ _SLOTS_LOWER: Dict[str, str] = {slot.lower(): slot for slot in _SLOTS}
 # Royal houses carry no abbreviation (`GRE.Monarchist`, `MOR.Monarchist`).
 _NO_ABBREVIATION_SLOTS = frozenset({"Monarchist"})
 
-_LOC_LINE_RE = re.compile(r'^(\s*)([\w.\-]+):\d*\s*"(.*)"\s*$')
+# The trailing-comment group is load-bearing: 17 party keys carry a `#` note
+# after the closing quote, and anchoring on the quote alone hid every one of
+# them, so their hooks were reported as orphans.
+_LOC_LINE_RE = re.compile(r'^(\s*)([\w.\-]+):\d*\s*"(.*)"\s*(?:#.*)?$')
 _NAME_RE = re.compile(r"^£[\w.\-]+ \([^()]+\) - .+$")
 _NAME_NO_ABBREVIATION_RE = re.compile(r"^£[\w.\-]+ .+$")
 _DESC_HEADER_RE = re.compile(r"^\([^()]+\) - ")

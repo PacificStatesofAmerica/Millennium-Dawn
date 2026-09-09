@@ -108,6 +108,12 @@ def test_hook_pointing_at_a_missing_key_is_flagged(tmp_path, write_path):
     assert _categories(validator) == ["party-loc-orphan-hook"]
 
 
+def test_key_with_a_trailing_comment_is_still_defined(tmp_path, write_path):
+    loc = _GRE_NAME.rstrip("\n") + " #desc uses CYP.conservatism\n" + _GRE_DESC
+    validator = _run(tmp_path, write_path, loc, _GRE_HOOKS)
+    assert validator._issues == []
+
+
 def test_bespoke_key_is_not_flagged(tmp_path, write_path):
     loc = _GRE_NAME + _GRE_DESC + ' ITA.forza_nuova_loc_key:0 "£generic Forza"\n'
     validator = _run(tmp_path, write_path, loc, _GRE_HOOKS)
